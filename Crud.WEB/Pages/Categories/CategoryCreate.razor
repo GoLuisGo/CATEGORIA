@@ -1,0 +1,38 @@
+﻿@page "/categories/create"
+@using Crud.Shared.Entities;
+@using Crud.WEB.Repositories;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Categoria</h3>
+
+<CategoryForm @ref="categoryForm" Category="category" OnValidSubmit="Create" ReturnAction="Return" />
+
+
+@code {
+    private Category category = new();
+    private CategoryForm? categoryForm;
+    private async Task Create()
+    {
+        var httpResponse = await repository.Post("/api/categories", category);
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            categoryForm!.FormPostedSuccessfully = true;
+
+
+            navigationManager.NavigateTo("/categories");
+    }
+    }
+    private void Return()
+    {
+        navigationManager.NavigateTo("/countries");
+    }
+}
+

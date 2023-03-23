@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Crud.Shared.Entities;
 
-namespace Stores.API.Data
+namespace Crud.API.Data
 {
     public class DataContext : DbContext
     {

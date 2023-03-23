@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Stores.API.Data;
+using Crud.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,24 @@ builder.Services.AddSwaggerGen();
 //Inyección de dependencias del servicio SQl Server
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
+
+// set data por default 
+builder.Services.AddTransient<SeedDb>();
+
 var app = builder.Build();
+    SeedData(app);
+
+    void SeedData(WebApplication app)
+    {
+        IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+        using (IServiceScope? scope = scopedFactory!.CreateScope())
+        {
+            SeedDb? service = scope.ServiceProvider.GetService<SeedDb>();
+            service!.SeedAsync().Wait();
+        }
+    }
+//----------------------------------
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -27,5 +44,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//cors del API
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
 
 app.Run();

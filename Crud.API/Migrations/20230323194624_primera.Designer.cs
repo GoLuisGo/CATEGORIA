@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Stores.API.Data;
+using Crud.API.Data;
 
 #nullable disable
 
 namespace Crud.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230323175827_primera")]
-    partial class primera
+    [Migration("20230323194624_primera")]
+    partial class Primera
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
